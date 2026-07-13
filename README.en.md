@@ -26,9 +26,11 @@ bash install.sh
 
 Send this to your coding agent (Claude Code / Cursor / …):
 
-> Read https://github.com/LeifDiao/grok-privacy-guard , clone it and run `install.sh` for me.
+> Read https://github.com/LeifDiao/grok-privacy-guard , clone it and run `install.sh` for me, and **keep the sentinel visible on every launch — do not enable silent mode**.
 
 `install.sh` is idempotent and self-backing-up, so the agent can just run it.
+
+> ⚠️ **Make sure it announces itself.** By default the sentinel prints a status line before every grok launch (🟢 guard active / 🔴 alert). When an agent installs it, require it to **keep that line visible and NOT enable silent mode (`GROK_GUARD_QUIET`)** — being able to see it every single time is exactly what makes it trustworthy. Don't let it "install quietly and go dark."
 
 > New terminals activate automatically; for the current one run `source ~/grok-privacy/grok-guard.sh`.
 

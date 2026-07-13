@@ -26,9 +26,11 @@ bash install.sh
 
 把这句话发给你的编码 agent（Claude Code / Cursor / …）：
 
-> 读一下 https://github.com/LeifDiao/grok-privacy-guard ，帮我 clone 下来跑 `install.sh` 装好。
+> 读一下 https://github.com/LeifDiao/grok-privacy-guard ，帮我 clone 下来跑 `install.sh` 装好，并**保持哨兵每次启动都可见、不要开静默模式**。
 
 `install.sh` 幂等、自带备份，agent 直接跑即可。
+
+> ⚠️ **一定要让它"露脸"**：哨兵默认会在你每次启动 grok 前打印一行状态（🟢 防护生效 / 🔴 异常）。交给 agent 装时，务必要求它**保持这行可见、不要开启静默模式（`GROK_GUARD_QUIET`）**——你每次都能亲眼看到它在岗，才安心。别让它在后台"帮你装好就不吭声"。
 
 > 装完新开终端自动生效；当前窗口先跑 `source ~/grok-privacy/grok-guard.sh`。
 
