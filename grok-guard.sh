@@ -51,18 +51,24 @@ grok() {
     fp="unpinned"
   fi
 
+  # 是否"快命令"（输出直接打到终端、横幅本来就看得见）——这些不加停顿
+  local hold=1 shown=0 _a
+  for _a in "$@"; do case "$_a" in -p|--single|--version|-v|--help|-h) hold=0; break;; esac; done
+
   # —— 启动前状态条 ——
   if [ "$block" = 1 ]; then
-    printf '%s🛡️  grok-guard: ✗ 上传禁用开关异常（缺:%s）— grok 可能会上传你的代码库！%s\n' "$R" "$miss" "$N"
+    printf '%s🛡️  grok-guard: ✗ 上传防护开关异常（缺:%s）— grok 可能会上传你的代码库！%s\n' "$R" "$miss" "$N"
     printf '仍要启动 grok 吗？[y/N] '; read -r ans
     case "$ans" in [yY]*) ;; *) printf '已取消。修复: bash %s/grok-guard-check.sh\n' "$DIR"; return 1;; esac
   elif [ "$fp" = changed ]; then
-    printf '%s🛡️  grok-guard: 开关✓  指纹⚠变了%s（若刚升级属正常 → bash %s/grok-guard-check.sh 复检刷新）\n' "$Y" "$N" "$DIR"
+    printf '%s🛡️  grok-guard: 开关✓  指纹⚠变了%s（若刚升级属正常 → bash %s/grok-guard-check.sh 复检刷新）\n' "$Y" "$N" "$DIR"; shown=1
   elif [ "$fp" = unpinned ]; then
-    printf '%s🛡️  grok-guard: 开关✓  指纹?未固定%s（先跑一次 bash %s/grok-guard-check.sh）\n' "$Y" "$N" "$DIR"
+    printf '%s🛡️  grok-guard: 开关✓  指纹?未固定%s（先跑一次 bash %s/grok-guard-check.sh）\n' "$Y" "$N" "$DIR"; shown=1
   elif [ "$quiet" != 1 ]; then
-    printf '%s🛡️  grok-guard: 上传防护生效 ✓  开关✓  指纹✓  —  启动 grok…%s\n' "$G" "$N"
+    printf '%s🛡️  grok-guard: 上传防护生效 ✓  开关✓  指纹✓  —  启动 grok…%s\n' "$G" "$N"; shown=1
   fi
+  # grok 是全屏 TUI，会瞬间盖住上面这行——停顿一下让你看得见（快命令不停顿；GROK_GUARD_HOLD=0 可关）
+  [ "$shown" = 1 ] && [ "$hold" = 1 ] && sleep "${GROK_GUARD_HOLD:-0.8}" 2>/dev/null
 
   # —— 跑真 grok ——
   base="$(wc -l < "$LOG" 2>/dev/null || echo 0)"

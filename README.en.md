@@ -51,6 +51,8 @@ Send this to your coding agent (Claude Code / Cursor / …):
 🛡️  grok-guard: no whole-repo upload this session · queue clean ✓
 ```
 
+> grok is a **fullscreen TUI**: the pre-launch line **pauses ~0.8s** so you can read it, then the TUI covers it; the "no upload this session" line prints **after you quit grok**. Quick commands (e.g. `grok --version`) don't pause. Disable the pause with `export GROK_GUARD_HOLD=0`.
+
 | Color | Meaning |
 |---|---|
 | 🟢 green | Guard active, no upload this session |
