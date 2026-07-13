@@ -68,14 +68,16 @@ g " ✓ config.toml 已写入禁用开关（disable_codebase_upload / trace_uplo
 shasum -a 256 "$GROK_HOME/bin/grok" 2>/dev/null | awk '{print $1}' > "$DIR/known-good.sha256" || true
 g " ✓ 已固定二进制指纹"
 
-# 4) 注入 shell rc（幂等）
+# 4) 注入 shell rc（幂等，覆盖 zsh 与 bash）
 HOMELIT="$DIR"; case "$DIR" in "$HOME"/*) HOMELIT="\$HOME/${DIR#"$HOME"/}";; esac
 LINE="[ -f \"$HOMELIT/grok-guard.sh\" ] && . \"$HOMELIT/grok-guard.sh\"  # grok-privacy-guard"
+RCS="$HOME/.zshrc"; touch "$HOME/.zshrc"                       # zsh：macOS 默认
+for br in "$HOME/.bashrc" "$HOME/.bash_profile"; do [ -f "$br" ] && RCS="$RCS $br"; done
+# 用 bash 但没有任何 bash 启动文件时，建 .bash_profile（macOS 登录 shell 读它，不读 .bashrc）
+case "${SHELL:-}" in *bash*) [ -f "$HOME/.bashrc" ] || [ -f "$HOME/.bash_profile" ] || { touch "$HOME/.bash_profile"; RCS="$RCS $HOME/.bash_profile"; };; esac
 added=""
-for rc in "$HOME/.zshrc" "$HOME/.bashrc"; do
-  [ "$rc" = "$HOME/.bashrc" ] && [ ! -f "$rc" ] && continue   # 没有 bashrc 就不建
-  touch "$rc"
-  if grep -qF 'grok-guard.sh' "$rc"; then :; else printf '\n%s\n' "$LINE" >> "$rc"; added="$added $rc"; fi
+for rc in $RCS; do
+  if grep -qF 'grok-guard.sh' "$rc" 2>/dev/null; then :; else printf '\n%s\n' "$LINE" >> "$rc"; added="$added $rc"; fi
 done
 [ -n "$added" ] && g " ✓ 已注入哨兵:$added" || y " ℹ 哨兵注入行已存在，跳过"
 
@@ -83,5 +85,11 @@ done
 echo; bash "$DIR/grok-guard-check.sh" || true
 
 echo
-g "安装完成。新开终端即自动生效；当前窗口先跑： source $HOMELIT/grok-guard.sh"
+g "✅ 安装完成。"
+echo "  ⚠️ 关键最后一步——哨兵只对『新 shell』生效："
+echo "     · 当前这个窗口：先跑  source $HOMELIT/grok-guard.sh"
+echo "     · 或直接新开一个终端"
+echo "  然后敲一次  grok --version  验证；看到开头的 🛡️  绿字就说明生效了。"
+echo "  （在装之前就开着的老终端里敲 grok 不会显示——这是最常见的『没显示』原因。）"
+echo
 echo "卸载： bash $SRC/uninstall.sh   （只移除哨兵，不动 grok 本身）"

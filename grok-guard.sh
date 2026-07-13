@@ -8,8 +8,17 @@
 # 只报警不打绿字：  export GROK_GUARD_QUIET=1
 # 项目主页：https://github.com/LeifDiao/grok-privacy-guard
 # ─────────────────────────────────────────────────────────────────────────────
+# 定义函数前先解析真正的 grok 可执行文件——即使 grok 不在 ~/.grok/bin（比如 npm 装的），
+# 也能正常显示哨兵，而不是静默放行。
+unset -f grok 2>/dev/null || true
+if [ -x "$HOME/.grok/bin/grok" ]; then
+  _GROK_GUARD_BIN="$HOME/.grok/bin/grok"
+else
+  _GROK_GUARD_BIN="$(command -v grok 2>/dev/null || true)"
+fi
+
 grok() {
-  local BIN="$HOME/.grok/bin/grok"
+  local BIN="${_GROK_GUARD_BIN:-$HOME/.grok/bin/grok}"
   local CFG="$HOME/.grok/config.toml"
   local QUEUE="$HOME/.grok/upload_queue"
   local LOG="$HOME/.grok/logs/unified.jsonl"
