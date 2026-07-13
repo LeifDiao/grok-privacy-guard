@@ -86,10 +86,10 @@ echo; bash "$DIR/grok-guard-check.sh" || true
 
 echo
 g "✅ 安装完成。"
-echo "  ⚠️ 关键最后一步——哨兵只对『新 shell』生效："
-echo "     · 当前这个窗口：先跑  source $HOMELIT/grok-guard.sh"
-echo "     · 或直接新开一个终端"
+echo "  ⚠️ 关键最后一步——哨兵只对『新 shell』生效，当前窗口二选一让它立刻生效："
+printf '     \033[1m▶ 最快： exec zsh\033[0m   （原地重载当前终端；bash 用户用 exec bash）\n'
+echo "     ▶ 或： 直接新开一个终端窗口"
 echo "  然后敲一次  grok --version  验证；看到开头的 🛡️  绿字就说明生效了。"
-echo "  （在装之前就开着的老终端里敲 grok 不会显示——这是最常见的『没显示』原因。）"
+echo "  （在装之前就开着、又没重载的老终端里敲 grok 不会显示——这是最常见的『没显示』原因。）"
 echo
 echo "卸载： bash $SRC/uninstall.sh   （只移除哨兵，不动 grok 本身）"
