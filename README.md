@@ -1,5 +1,7 @@
 # 🛡️ grok-privacy-guard
 
+**中文 · [English](README.en.md)**
+
 > 一条命令，关掉 xAI 官方 Grok CLI「偷偷把你整个代码库打包上传」的行为，并且**每次启动都当着你的面自检一遍**。
 >
 > **TL;DR (EN):** One command to disable xAI Grok CLI's silent whole-repo upload, pin the binary, and verify on every launch. macOS / zsh + bash.
