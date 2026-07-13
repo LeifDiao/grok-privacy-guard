@@ -52,7 +52,7 @@ grok() {
   elif [ "$fp" = unpinned ]; then
     printf '%s🛡️  grok-guard: 开关✓  指纹?未固定%s（先跑一次 bash %s/grok-guard-check.sh）\n' "$Y" "$N" "$DIR"
   elif [ "$quiet" != 1 ]; then
-    printf '%s🛡️  grok-guard: 上传禁用生效 ✓  开关✓  指纹✓  —  启动 grok…%s\n' "$G" "$N"
+    printf '%s🛡️  grok-guard: 上传防护生效 ✓  开关✓  指纹✓  —  启动 grok…%s\n' "$G" "$N"
   fi
 
   # —— 跑真 grok ——

@@ -2,15 +2,15 @@
 
 **中文 · [English](README.en.md)**
 
-> 关掉 xAI 官方 Grok CLI「偷偷把你整个代码库打包上传到云端」的行为，并在**每次启动 grok 时用一行字告诉你有没有在传**。
+> 给 Grok CLI 加一层代码库隐私防护：防止你的代码库在不知情时被打包上传，并在**每次启动时检测上传状态、及时提醒你**。
 > macOS · zsh / bash。所有脚本只读日志、只写你自己的 config，不外发任何数据。
 
 ## 能做什么
 
-- **本地关死整仓上传**：禁掉 grok 把整个代码库（含 git 历史）打包上传的旁路通道，以及会话 trace 上传。
-- **防止被绕过**：锁死 grok 自动更新 + 校验二进制指纹，二进制被换会告警。
-- **每次启动可见**：你敲 `grok`，🟢 绿字表示"上传已关、本次没偷传"；🔴 红字报警。
-- **查历史**：一条命令还原你以前被打包上传过哪些代码库。
+- **防止整仓上传**：阻止 grok 在后台把整个代码库（含 git 历史）打包上传，并一并拦下会话 trace 上传。
+- **防止被绕过**：锁定 grok 自动更新 + 校验二进制指纹，二进制被替换会提醒。
+- **启动检测**：每次启动 grok 自动自检——🟢 绿字＝防护生效、本次无上传；🔴 红字＝异常提醒。
+- **历史检测**：一条命令检测你以前有没有代码库被上传过。
 
 ## 安装
 
@@ -37,32 +37,32 @@ bash install.sh
 | 命令 | 作用 |
 |---|---|
 | `bash install.sh` | 安装 / 更新 |
-| `bash grok-guard-check.sh` | 起个假仓库**实测**上传是否真被禁用（**升级 grok 后必跑**，会自动刷新指纹） |
-| `bash grok-guard-evidence.sh` | 查你历史上被上传过哪些代码库（只读） |
-| `bash uninstall.sh` | 卸载哨兵（不动 grok，config 开关默认保留） |
+| `bash grok-guard-check.sh` | 起个假仓库**实测**防护是否真的生效（**升级 grok 后必跑**，会自动刷新指纹） |
+| `bash grok-guard-evidence.sh` | 检测你历史上有没有代码库被上传过（只读） |
+| `bash uninstall.sh` | 卸载哨兵（不动 grok，config 防护默认保留） |
 
 ## 每次启动会看到
 
 ```
-🛡️  grok-guard: 上传禁用生效 ✓  开关✓  指纹✓  —  启动 grok…
+🛡️  grok-guard: 上传防护生效 ✓  开关✓  指纹✓  —  启动 grok…
    … grok 正常运行 …
 🛡️  grok-guard: 本次会话无整仓上传 · 队列干净 ✓
 ```
 
 | 颜色 | 含义 |
 |---|---|
-| 🟢 绿 | 上传禁用生效，本次没偷传 |
-| 🟡 黄 | 二进制被换/刚升级 → 跑 `grok-guard-check.sh` 复检刷新 |
-| 🔴 红 | 开关被动过（拦你确认）/ 本次疑似触发上传（报警） |
+| 🟢 绿 | 防护生效，本次无上传 |
+| 🟡 黄 | 二进制被替换/刚升级 → 跑 `grok-guard-check.sh` 复检刷新 |
+| 🔴 红 | 防护被改动（拦你确认）/ 本次疑似发生上传（提醒） |
 
-临时绕过哨兵：`GROK_GUARD=0 grok ...`　·　只报警不打绿字：`export GROK_GUARD_QUIET=1`
+临时绕过哨兵：`GROK_GUARD=0 grok ...`　·　只提醒不打绿字：`export GROK_GUARD_QUIET=1`
 
 ## 它改了什么 / 局限
 
 - 往 `~/.grok/config.toml` 写三行（自动备份）：`disable_codebase_upload=true`、`trace_upload=false`、`auto_update=false`。
-- **不做网络层拦截**，依赖 grok 遵守自己的开关——所以加了指纹锁 + 每次自检兜底。要物理拦截，用按进程防火墙（LuLu）或容器隔离。
-- 你主动让 grok 读的文件仍会发给模型端（正常 AI 行为，不在本开关范围）——别让它读敏感文件。
+- **不做网络层拦截**，依赖 grok 遵守自己的开关——所以加了指纹校验 + 每次启动检测兜底。要物理拦截，用按进程防火墙（LuLu）或容器隔离。
+- 你主动让 grok 读的文件仍会发给模型端（正常 AI 行为，不在防护范围）——别让它读敏感文件。
 
 ## 来源 / License
 
-机制由 [@cereblab](https://gist.github.com/cereblab/dc9a40bc26120f4540e4e09b75ffb547) 的抓包分析揭示（[HN 讨论](https://news.ycombinator.com/item?id=48877371)）。MIT License.
+相关机制由 [@cereblab](https://gist.github.com/cereblab/dc9a40bc26120f4540e4e09b75ffb547) 的抓包分析记录（[HN 讨论](https://news.ycombinator.com/item?id=48877371)）。MIT License.
