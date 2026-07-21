@@ -8,7 +8,7 @@
 # 临时绕过：  GROK_GUARD=0 grok ...
 # 只报警不打绿字：  export GROK_GUARD_QUIET=1
 # 关掉启动前停顿：  export GROK_GUARD_HOLD=0
-# 项目主页：https://github.com/LeifDiao/grok-privacy-guard
+# 项目主页：https://github.com/lemomo-ai/grok-privacy-guard
 # ─────────────────────────────────────────────────────────────────────────────
 # 定义函数前先解析真正的 grok 可执行文件——即使 grok 不在 ~/.grok/bin（比如 npm 装的），
 # 也能正常显示哨兵，而不是静默放行。

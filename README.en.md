@@ -17,7 +17,7 @@
 ### Option A · yourself
 
 ```bash
-git clone https://github.com/LeifDiao/grok-privacy-guard.git
+git clone https://github.com/lemomo-ai/grok-privacy-guard.git
 cd grok-privacy-guard
 bash install.sh
 ```
@@ -26,7 +26,7 @@ bash install.sh
 
 Send this to your coding agent (Claude Code / Cursor / …):
 
-> Read https://github.com/LeifDiao/grok-privacy-guard , clone it and run `install.sh` for me, and **keep the sentinel visible on every launch — do not enable silent mode**.
+> Read https://github.com/lemomo-ai/grok-privacy-guard , clone it and run `install.sh` for me, and **keep the sentinel visible on every launch — do not enable silent mode**.
 
 `install.sh` is idempotent and self-backing-up, so the agent can just run it.
 

@@ -19,7 +19,7 @@
 ### 方法 A · 自己装
 
 ```bash
-git clone https://github.com/LeifDiao/grok-privacy-guard.git
+git clone https://github.com/lemomo-ai/grok-privacy-guard.git
 cd grok-privacy-guard
 bash install.sh
 ```
@@ -28,7 +28,7 @@ bash install.sh
 
 把这句话发给你的编码 agent（Claude Code / Cursor / …）：
 
-> 读一下 https://github.com/LeifDiao/grok-privacy-guard ，帮我 clone 下来跑 `install.sh` 装好，并**保持哨兵每次启动都可见、不要开静默模式**。
+> 读一下 https://github.com/lemomo-ai/grok-privacy-guard ，帮我 clone 下来跑 `install.sh` 装好，并**保持哨兵每次启动都可见、不要开静默模式**。
 
 `install.sh` 幂等、自带备份，agent 直接跑即可。
 
