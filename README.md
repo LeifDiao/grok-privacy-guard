@@ -2,7 +2,7 @@
 
 <img width="505" height="214" alt="Screenshot 2026-07-13 at 1 11 02 PM" src="https://github.com/user-attachments/assets/14b6d812-eeff-4fbd-ba84-8c0bbfd73996" />
 
-**中文 · [English](README.en.md)**
+**中文 · [English](README_en.md)**
 
 > 给 Grok CLI 加一层代码库隐私防护：防止你的代码库在不知情时被打包上传，并在**每次启动时检测上传状态、及时提醒你**。
 > macOS · zsh / bash。所有脚本只读日志、只写你自己的 config，不外发任何数据。
